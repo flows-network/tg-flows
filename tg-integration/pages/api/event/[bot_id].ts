@@ -28,10 +28,10 @@ const fn = async (req: NextApiRequest, res: NextApiResponse) => {
 
         if (allFlows) {
             let flowArray = [];
-            for (let flows in allFlows) {
-                let flow_id: any = allFlows[flows];
+            for (let flow_id in allFlows) {
+                let flows_user: any = allFlows[flow_id];
                 flowArray.push({
-                    flows_user: flows,
+                    flows_user: flows_user,
                     flow_id: flow_id,
                 });
             }
