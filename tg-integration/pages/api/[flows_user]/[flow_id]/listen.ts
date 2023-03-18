@@ -30,8 +30,6 @@ const fn = async (req: NextApiRequest, res: NextApiResponse) => {
     const url = `https://api.telegram.org/bot${token}/setWebhook?url=${CALLBACK_URL}&secret_token=${st}`;
     let resp = await fetch(url);
 
-    console.log(url);
-    console.log(await resp.text());
     if (resp.ok) {
         const pipe = redis.pipeline();
         pipe.hset(`telegram:${token}:trigger`, {

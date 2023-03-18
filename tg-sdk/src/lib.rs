@@ -8,9 +8,8 @@ pub use types::*;
 use http_req::request;
 
 use flowsnet_platform_sdk::write_error_log;
-use std::future::Future;
 
-const TG_API_PREFIX: &str = "";
+const TG_API_PREFIX: &str = "https://tg-flows.vercel.app/api";
 
 extern "C" {
     // Flag if current running is for listening(1) or message receving(0)
