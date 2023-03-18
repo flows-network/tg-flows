@@ -254,8 +254,6 @@ pub use chat_id::*;
 pub use recipient::*;
 pub use user_id::*;
 
-use serde::Serialize;
-
 /// Converts an `i64` timestump to a `choro::DateTime`, producing serde error
 /// for invalid timestumps
 pub(crate) fn serde_timestamp<E: serde::de::Error>(
@@ -433,16 +431,6 @@ pub(crate) mod duration_secs {
             assert_eq!(serde_json::to_string(&duration).unwrap(), json.to_owned());
         }
     }
-}
-
-pub(crate) fn serialize_reply_to_message_id<S>(
-    this: &Option<MessageId>,
-    serializer: S,
-) -> Result<S::Ok, S::Error>
-where
-    S: serde::Serializer,
-{
-    this.map(|MessageId(id)| id).serialize(serializer)
 }
 
 pub(crate) mod serde_rgb {
