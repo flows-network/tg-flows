@@ -40,7 +40,29 @@ const fn = async (req: NextApiRequest, res: NextApiResponse) => {
         });
         await pipe.exec();
 
-        return res.status(200).json("{}");
+        return res.status(200).json(
+            {
+                "update_id": 892252934,
+                "message": {
+                    "message_id": 6557,
+                    "from": {
+                        "id": 218485655,
+                        "is_bot": false,
+                        "first_name": "Waffle",
+                        "username": "WaffleLapkin",
+                        "language_code": "en"
+                    },
+                    "chat": {
+                        "id": 218485655,
+                        "first_name": "Waffle",
+                        "username": "WaffleLapkin",
+                        "type": "private"
+                    },
+                    "date": 1569518342,
+                    "text": "hello there"
+                }
+            }
+        );
     } else {
         return res.status(400).send("invalid token");
     }
