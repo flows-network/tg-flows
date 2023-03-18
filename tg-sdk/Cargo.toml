@@ -2,6 +2,12 @@
 name = "tg-flows"
 version = "0.1.0"
 edition = "2021"
+license = "MIT/Apache-2.0"
+description = "Telegram integration for flows.network"
+documentation = "https://docs.rs/tg-flows"
+
+[package.metadata.docs.rs]
+default-target = "wasm32-wasi"
 
 [lib]
 path = "src/lib.rs"
