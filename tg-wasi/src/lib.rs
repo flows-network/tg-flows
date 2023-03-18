@@ -15,14 +15,14 @@ extern "C" {
 pub unsafe fn message() {
     if let Some(_) = update_from_subcription() {
         let headers = headers_from_subcription().unwrap_or_default();
-        let bot_id = headers
+        let token = headers
             .into_iter()
             .find(|header| header.0.to_ascii_lowercase() == "x-telegram-bot-api-secret-token")
             .unwrap_or((String::new(), String::new()))
             .1;
 
         let mut writer = Vec::new();
-        let res = request::get(format!("{}/event/{}", TG_API_PREFIX, bot_id), &mut writer).unwrap();
+        let res = request::get(format!("{}/event/{}", TG_API_PREFIX, token), &mut writer).unwrap();
 
         if res.status_code().is_success() {
             if let Ok(flows) = String::from_utf8(writer) {

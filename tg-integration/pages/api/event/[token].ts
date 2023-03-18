@@ -4,7 +4,7 @@ import { decrypt } from "@/lib/token";
 import bs58 from "bs58";
 
 const fn = async (req: NextApiRequest, res: NextApiResponse) => {
-    const { bot_id: token } = req.query;
+    const { token } = req.query;
 
     if (!token) {
         return res.status(400).send("Bad request");
