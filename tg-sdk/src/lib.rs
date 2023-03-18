@@ -1,6 +1,8 @@
+mod api;
 mod types;
 mod util;
 
+pub use api::*;
 pub use types::*;
 
 use http_req::request;
@@ -42,14 +44,20 @@ unsafe fn _get_flow_id() -> String {
     String::from_utf8(flow_id).unwrap()
 }
 
-pub fn revoke_listeners(bot_id: u32) {
+pub fn revoke_listeners<T>(token: T)
+where
+    T: ToString,
+{
     unsafe {
         let flows_user = _get_flows_user();
         let flow_id = _get_flow_id();
 
         let mut writer = Vec::new();
         let res = request::get(
-            format!("{TG_API_PREFIX}/{flows_user}/{flow_id}/revoke?bot_id={bot_id}"),
+            format!(
+                "{TG_API_PREFIX}/{flows_user}/{flow_id}/revoke?token={}",
+                token.to_string()
+            ),
             &mut writer,
         )
         .unwrap();
@@ -64,10 +72,10 @@ pub fn revoke_listeners(bot_id: u32) {
     }
 }
 
-pub async fn listen_to_event<F, Fut>(bot_id: u32, callback: F)
+pub fn listen_to_update<T, F>(token: T, callback: F)
 where
-    F: FnOnce(Update) -> Fut,
-    Fut: Future<Output = ()>,
+    T: ToString,
+    F: FnOnce(Update),
 {
     unsafe {
         match is_listening() {
@@ -78,7 +86,10 @@ where
 
                 let mut writer = Vec::new();
                 let res = request::get(
-                    format!("{TG_API_PREFIX}/{flows_user}/{flow_id}/listen?bot_id={bot_id}"),
+                    format!(
+                        "{TG_API_PREFIX}/{flows_user}/{flow_id}/listen?token={}",
+                        token.to_string()
+                    ),
                     &mut writer,
                 )
                 .unwrap();
@@ -86,7 +97,7 @@ where
                 match res.status_code().is_success() {
                     true => {
                         if let Ok(event) = serde_json::from_slice::<Update>(&writer) {
-                            callback(event).await;
+                            callback(event);
                         }
                     }
                     false => {
@@ -99,7 +110,7 @@ where
             }
             _ => {
                 if let Some(event) = event_from_subcription() {
-                    callback(event).await;
+                    callback(event);
                 }
             }
         }
