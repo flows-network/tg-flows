@@ -4,7 +4,7 @@ use anyhow::Result;
 use http_req::{request::Request, uri::Uri};
 use serde::de::DeserializeOwned;
 
-use crate::{ChatId, Me, Message};
+use crate::{ChatId, Me, Message, MessageId, True};
 
 pub use self::method::Method;
 
@@ -46,6 +46,14 @@ impl Telegram {
         self.request(Method::GetMe, &[])
     }
 
+    pub fn log_out(&self) -> Result<True> {
+        self.request(Method::LogOut, &[])
+    }
+
+    pub fn close(&self) -> Result<True> {
+        self.request(Method::Close, &[])
+    }
+
     pub fn send_message<T>(&self, chat_id: ChatId, text: T) -> Result<Message>
     where
         T: Into<String>,
@@ -56,5 +64,27 @@ impl Telegram {
             "text": text,
         });
         self.request(Method::SendMessage, body.to_string().as_bytes())
+    }
+
+    pub fn forward_message<T>(&self, chat_id: ChatId, from_chat_id: ChatId) -> Result<Message> {
+        let body = serde_json::json!({
+            "chat_id": chat_id,
+            "from_chat_id": from_chat_id,
+        });
+        self.request(Method::ForwardMessage, body.to_string().as_bytes())
+    }
+
+    pub fn copy_message<T>(
+        &self,
+        chat_id: ChatId,
+        from_chat_id: ChatId,
+        message_id: MessageId,
+    ) -> Result<Message> {
+        let body = serde_json::json!({
+            "chat_id": chat_id,
+            "from_chat_id": from_chat_id,
+            "message_id": message_id,
+        });
+        self.request(Method::CopyMessage, body.to_string().as_bytes())
     }
 }
