@@ -88,13 +88,19 @@ impl Telegram {
         self.request(Method::CopyMessage, body.to_string().as_bytes())
     }
 
-    pub fn edit_message_text<T>(&self, chat_id: ChatId, text: T) -> Result<Message>
+    pub fn edit_message_text<T>(
+        &self,
+        chat_id: ChatId,
+        message_id: MessageId,
+        text: T,
+    ) -> Result<Message>
     where
         T: Into<String>,
     {
         let text = text.into();
         let body = serde_json::json!({
             "chat_id": chat_id,
+            "message_id": message_id,
             "text": text,
         });
         self.request(Method::EditMessageText, body.to_string().as_bytes())
