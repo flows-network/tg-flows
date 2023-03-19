@@ -76,6 +76,14 @@ pub enum Method {
     // GetChatMenuButton,
     // SetMyDefaultAdministratorRights,
     // GetMyDefaultAdministratorRights,
+    EditMessageText,
+    EditMessageCaption,
+    EditMessageMedia,
+    EditMessageLiveLocation,
+    StopMessageLiveLocation,
+    EditMessageReplyMarkup,
+    StopPoll,
+    DeleteMessage,
 }
 
 impl ToString for Method {
@@ -155,6 +163,14 @@ impl ToString for Method {
             // Method::GetChatMenuButton => todo!(),
             // Method::SetMyDefaultAdministratorRights => todo!(),
             // Method::GetMyDefaultAdministratorRights => todo!(),
+            Method::EditMessageText => "editMessageText".to_string(),
+            Method::EditMessageCaption => "editMessageCaption".to_string(),
+            Method::EditMessageMedia => "editMessageMedia".to_string(),
+            Method::EditMessageLiveLocation => "editMessageLiveLocation".to_string(),
+            Method::StopMessageLiveLocation => "stopMessageLiveLocation".to_string(),
+            Method::EditMessageReplyMarkup => "editMessageReplyMarkup".to_string(),
+            Method::StopPoll => "stopPoll".to_string(),
+            Method::DeleteMessage => "deleteMessage".to_string(),
         }
     }
 }

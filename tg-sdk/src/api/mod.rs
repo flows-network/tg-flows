@@ -66,7 +66,7 @@ impl Telegram {
         self.request(Method::SendMessage, body.to_string().as_bytes())
     }
 
-    pub fn forward_message<T>(&self, chat_id: ChatId, from_chat_id: ChatId) -> Result<Message> {
+    pub fn forward_message(&self, chat_id: ChatId, from_chat_id: ChatId) -> Result<Message> {
         let body = serde_json::json!({
             "chat_id": chat_id,
             "from_chat_id": from_chat_id,
@@ -74,7 +74,7 @@ impl Telegram {
         self.request(Method::ForwardMessage, body.to_string().as_bytes())
     }
 
-    pub fn copy_message<T>(
+    pub fn copy_message(
         &self,
         chat_id: ChatId,
         from_chat_id: ChatId,
@@ -87,4 +87,24 @@ impl Telegram {
         });
         self.request(Method::CopyMessage, body.to_string().as_bytes())
     }
+
+    pub fn edit_message_text<T>(&self, chat_id: ChatId, text: T) -> Result<Message>
+    where
+        T: Into<String>,
+    {
+        let text = text.into();
+        let body = serde_json::json!({
+            "chat_id": chat_id,
+            "text": text,
+        });
+        self.request(Method::EditMessageText, body.to_string().as_bytes())
+    }
+
+    // EditMessageCaption,
+    // EditMessageMedia,
+    // EditMessageLiveLocation,
+    // StopMessageLiveLocation,
+    // EditMessageReplyMarkup,
+    // StopPoll,
+    // DeleteMessage,
 }
