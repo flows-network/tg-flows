@@ -1,8 +1,9 @@
 mod method;
 
-use anyhow::Result;
+use anyhow::{anyhow, Result};
 use http_req::{request::Request, uri::Uri};
 use serde::de::DeserializeOwned;
+use serde_json::Value;
 
 use crate::{ChatId, Me, Message, MessageId, True};
 
@@ -35,9 +36,14 @@ impl Telegram {
             .body(body)
             .send(&mut writer)?;
 
-        let value = serde_json::from_str::<T>(&String::from_utf8(writer)?)?;
+        let value = serde_json::from_str::<Value>(&String::from_utf8(writer)?)?;
 
-        Ok(value)
+        let result = value
+            .get("result")
+            .ok_or(anyhow!("tg api returned without result"))?;
+        let t: T = serde_json::from_value(result.clone())?;
+
+        Ok(t)
     }
 }
 
@@ -100,7 +106,7 @@ impl Telegram {
         let text = text.into();
         let body = serde_json::json!({
             "chat_id": chat_id,
-            "message_id": message_id,
+            "message_id": message_id.0,
             "text": text,
         });
         self.request(Method::EditMessageText, body.to_string().as_bytes())
