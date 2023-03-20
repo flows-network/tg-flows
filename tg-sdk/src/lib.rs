@@ -76,6 +76,7 @@ where
     T: ToString,
     F: FnOnce(Update),
 {
+    println!("Prevent segment fault");
     unsafe {
         match is_listening() {
             // Calling register
