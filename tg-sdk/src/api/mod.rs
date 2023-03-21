@@ -12,12 +12,20 @@ pub use self::method::Method;
 const BASE_URL: &str = "https://api.telegram.org/bot";
 
 pub struct Telegram {
+    base_url: &'static str,
     token: String,
 }
 
 impl Telegram {
     pub fn new(token: String) -> Self {
-        Self { token }
+        Self {
+            base_url: BASE_URL,
+            token,
+        }
+    }
+
+    pub fn new_with_base_url(token: String, base_url: &'static str) -> Self {
+        Self { base_url, token }
     }
 }
 
@@ -26,7 +34,7 @@ impl Telegram {
     where
         T: DeserializeOwned,
     {
-        let url = format!("{}{}/{}", BASE_URL, self.token, method.to_string());
+        let url = format!("{}{}/{}", self.base_url, self.token, method.to_string());
         let uri: Uri = Uri::try_from(url.as_str())?;
 
         let mut writer = Vec::new();
@@ -111,12 +119,4 @@ impl Telegram {
         });
         self.request(Method::EditMessageText, body.to_string().as_bytes())
     }
-
-    // EditMessageCaption,
-    // EditMessageMedia,
-    // EditMessageLiveLocation,
-    // StopMessageLiveLocation,
-    // EditMessageReplyMarkup,
-    // StopPoll,
-    // DeleteMessage,
 }
