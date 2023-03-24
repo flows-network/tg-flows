@@ -23,8 +23,10 @@ pub fn run() {
 }
 ```
 
-[Telegram::new()] is a `Telegram` constructor that represents a bot.
+[Telegram::new()](https://docs.rs/tg-flows/latest/tg_flows/struct.Telegram.html#method.new) is a `Telegram` constructor that represents a bot.
 
-[listen_to_update()] is responsible for registering a listener for the bot
+[listen_to_update()](https://docs.rs/tg-flows/latest/tg_flows/fn.listen_to_update.html) is responsible for registering a listener for the bot
 represented by the `telegram_token`. When a new `Update` coming, the callback
 is called with received `Update`.
+
+The whole document is [here](https://docs.rs/tg-flows).
