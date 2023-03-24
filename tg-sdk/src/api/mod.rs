@@ -55,6 +55,7 @@ impl Telegram {
     }
 }
 
+// TODO: general & meaningful api
 impl Telegram {
     pub fn get_me(&self) -> Result<Me> {
         self.request(Method::GetMe, &[])
