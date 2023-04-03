@@ -39,3 +39,12 @@ uuid = { version = "1.3.0", features = ["v4"] }
 
 [dev-dependencies]
 cool_asserts = "2.0.3"
+
+[[example]]
+name = "get_me"
+
+[[example]]
+name = "send_message"
+
+[[example]]
+name = "get_chat_member"
