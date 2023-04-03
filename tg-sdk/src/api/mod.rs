@@ -5,7 +5,7 @@ use http_req::{request::Request, uri::Uri};
 use serde::de::DeserializeOwned;
 use serde_json::Value;
 
-use crate::{ChatId, Me, Message, MessageId, True};
+use crate::{Chat, ChatId, ChatMember, Me, Message, MessageId, True, UserId};
 
 pub use self::method::Method;
 
@@ -119,5 +119,34 @@ impl Telegram {
             "text": text,
         });
         self.request(Method::EditMessageText, body.to_string().as_bytes())
+    }
+
+    pub fn get_chat(&self, chat_id: ChatId) -> Result<Chat> {
+        let body = serde_json::json!({
+            "chat_id": chat_id,
+        });
+        self.request(Method::GetChat, body.to_string().as_bytes())
+    }
+
+    pub fn get_chat_administrators(&self, chat_id: ChatId) -> Result<ChatMember> {
+        let body = serde_json::json!({
+            "chat_id": chat_id,
+        });
+        self.request(Method::GetChatAdministrators, body.to_string().as_bytes())
+    }
+
+    pub fn get_chat_member_count(&self, chat_id: ChatId) -> Result<i32> {
+        let body = serde_json::json!({
+            "chat_id": chat_id,
+        });
+        self.request(Method::GetChatMemberCount, body.to_string().as_bytes())
+    }
+
+    pub fn get_chat_member(&self, chat_id: ChatId, user_id: UserId) -> Result<ChatMember> {
+        let body = serde_json::json!({
+            "chat_id": chat_id,
+            "user_id": user_id,
+        });
+        self.request(Method::GetChatMember, body.to_string().as_bytes())
     }
 }
