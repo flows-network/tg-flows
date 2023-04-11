@@ -44,7 +44,10 @@ cool_asserts = "2.0.3"
 name = "get_me"
 
 [[example]]
+name = "get_chat_member"
+
+[[example]]
 name = "send_message"
 
 [[example]]
-name = "get_chat_member"
+name = "send_photo"
