@@ -6,6 +6,7 @@ pub use api::*;
 pub use types::*;
 
 use http_req::request;
+use std::future::Future;
 
 use flowsnet_platform_sdk::write_error_log;
 
@@ -83,12 +84,12 @@ where
 /// registered listener of current flow so you don't need to do it manually.
 ///
 /// `callback` is a callback function which will be called when new `Update` is received.
-pub fn listen_to_update<T, F>(token: T, callback: F)
+pub async fn listen_to_update<T, F, Fut>(token: T, callback: F)
 where
     T: ToString,
-    F: FnOnce(Update),
+    F: FnOnce(Update) -> Fut,
+    Fut: Future<Output = ()>,
 {
-    println!("Prevent segment fault");
     unsafe {
         match is_listening() {
             // Calling register
@@ -109,7 +110,7 @@ where
                 match res.status_code().is_success() {
                     true => {
                         if let Ok(event) = serde_json::from_slice::<Update>(&writer) {
-                            callback(event);
+                            callback(event).await;
                         }
                     }
                     false => {
@@ -122,7 +123,7 @@ where
             }
             _ => {
                 if let Some(event) = event_from_subcription() {
-                    callback(event);
+                    callback(event).await;
                 }
             }
         }
