@@ -6,11 +6,16 @@ pub use api::*;
 pub use types::*;
 
 use http_req::request;
+use lazy_static::lazy_static;
 use std::future::Future;
 
 use flowsnet_platform_sdk::write_error_log;
 
-const TG_API_PREFIX: &str = "https://tg-flows.vercel.app/api";
+lazy_static! {
+    static ref TG_API_PREFIX: String = String::from(
+        std::option_env!("TG_API_PREFIX").unwrap_or("https://tg-flows.vercel.app/api")
+    );
+}
 
 extern "C" {
     // Flag if current running is for listening(1) or message receving(0)
@@ -61,8 +66,9 @@ where
         let mut writer = Vec::new();
         let res = request::get(
             format!(
-                "{TG_API_PREFIX}/{flows_user}/{flow_id}/revoke?token={}",
-                token.to_string()
+                "{}/{flows_user}/{flow_id}/revoke?token={}",
+                TG_API_PREFIX.as_str(),
+                urlencoding::encode(&token.to_string())
             ),
             &mut writer,
         )
@@ -100,8 +106,9 @@ where
                 let mut writer = Vec::new();
                 let res = request::get(
                     format!(
-                        "{TG_API_PREFIX}/{flows_user}/{flow_id}/listen?token={}",
-                        token.to_string()
+                        "{}/{flows_user}/{flow_id}/listen?token={}",
+                        TG_API_PREFIX.as_str(),
+                        urlencoding::encode(&token.to_string())
                     ),
                     &mut writer,
                 )

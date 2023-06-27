@@ -1,7 +1,12 @@
 use http_req::request;
+use lazy_static::lazy_static;
 use tg_flows::Update;
 
-const TG_API_PREFIX: &str = "";
+lazy_static! {
+    static ref TG_API_PREFIX: String = String::from(
+        std::option_env!("TG_API_PREFIX").unwrap_or("https://tg-flows.vercel.app/api")
+    );
+}
 
 extern "C" {
     fn get_event_body_length() -> i32;
@@ -22,7 +27,11 @@ pub unsafe fn message() {
             .1;
 
         let mut writer = Vec::new();
-        let res = request::get(format!("{}/event/{}", TG_API_PREFIX, token), &mut writer).unwrap();
+        let res = request::get(
+            format!("{}/event/{}", TG_API_PREFIX.as_str(), token),
+            &mut writer,
+        )
+        .unwrap();
 
         if res.status_code().is_success() {
             if let Ok(flows) = String::from_utf8(writer) {

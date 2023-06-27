@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { redis } from "@/lib/upstash";
 import { encrypt } from "@/lib/token";
 
-const CALLBACK_URL = "https://code.flows.network/hook/telegram/message";
+const CALLBACK_URL = `${process.env.CODE_FLOWS_URL}/hook/telegram/message`;
 
 const fn = async (req: NextApiRequest, res: NextApiResponse) => {
     const { flows_user, flow_id, token } = req.query;
