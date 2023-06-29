@@ -27,17 +27,23 @@ const fn = async (req: NextApiRequest, res: NextApiResponse) => {
     const st_bytes = new TextEncoder().encode(st_json);
     const st = bs58.encode(st_bytes);
 
+    const oldToken = await redis.hget(`telegram:${flows_user}:listen`, flow_id);
+
+    if (oldToken == token) {
+        return res.status(200).json({});
+    }
+
+    // Revoke old listener for this flow
+    if (oldToken) {
+        await redis.hdel(`telegram:${oldToken}:trigger`, flow_id);
+        const url = `https://api.telegram.org/bot${oldToken}/setWebhook?url=`;
+        await fetch(url);
+    }
+
     const url = `https://api.telegram.org/bot${token}/setWebhook?url=${CALLBACK_URL}&secret_token=${st}`;
     let resp = await fetch(url);
 
     if (resp.ok) {
-        // Get old listener for this flow
-        const oldToken = await redis.hget(`telegram:${flows_user}:listen`, flow_id);
-        if (oldToken) {
-            await redis.hdel(`telegram:${oldToken}:trigger`, flow_id);
-            const url = `https://api.telegram.org/bot${oldToken}/setWebhook?url=`;
-            await fetch(url);
-        }
         const pipe = redis.pipeline();
         pipe.hset(`telegram:${token}:trigger`, {
             [flow_id]: flows_user,
