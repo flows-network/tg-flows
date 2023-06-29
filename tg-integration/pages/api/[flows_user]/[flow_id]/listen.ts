@@ -31,6 +31,13 @@ const fn = async (req: NextApiRequest, res: NextApiResponse) => {
     let resp = await fetch(url);
 
     if (resp.ok) {
+        // Get old listener for this flow
+        const oldToken = await redis.hget(`telegram:${flows_user}:listen`, flow_id);
+        if (oldToken) {
+            await redis.hdel(`telegram:${oldToken}:trigger`, flow_id);
+            const url = `https://api.telegram.org/bot${oldToken}/setWebhook?url=`;
+            await fetch(url);
+        }
         const pipe = redis.pipeline();
         pipe.hset(`telegram:${token}:trigger`, {
             [flow_id]: flows_user,
