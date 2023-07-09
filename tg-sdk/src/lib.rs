@@ -29,6 +29,7 @@ extern "C" {
 
     fn get_event_body_length() -> i32;
     fn get_event_body(p: *mut u8) -> i32;
+    fn set_output(p: *const u8, len: i32);
     fn set_error_code(code: i16);
 }
 
@@ -116,6 +117,12 @@ where
 
                 match res.status_code().is_success() {
                     true => {
+                        let output = format!(
+                            "[{}] Listening for all messages to your bot.",
+                            std::env!("CARGO_CRATE_NAME")
+                        );
+                        set_output(output.as_ptr(), output.len() as i32);
+
                         if let Ok(event) = serde_json::from_slice::<Update>(&writer) {
                             callback(event).await;
                         }
