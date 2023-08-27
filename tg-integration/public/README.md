@@ -31,6 +31,6 @@ async fn handler(update: tg_flows::Update) {
 
 [listen_to_update()](https://docs.rs/tg-flows/latest/tg_flows/fn.listen_to_update.html) is responsible for registering a listener for the bot
 represented by the `telegram_token`. When a new [Update](https://docs.rs/tg-flows/latest/tg_flows/struct.Update.html) coming, the `handler`
-fn decorated by [update_handler](https://docs.rs/tg-flows/latest/tg_flows/macro.update_handler.html) is called.
+fn decorated by [update_handler](https://docs.rs/tg-flows/latest/tg_flows/attr.update_handler.html) is called.
 
 The whole document is [here](https://docs.rs/tg-flows).
