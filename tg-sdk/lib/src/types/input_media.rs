@@ -49,7 +49,13 @@ pub struct InputMediaPhoto {
 
 impl InputMediaPhoto {
     pub const fn new(media: InputFile) -> Self {
-        Self { media, caption: None, parse_mode: None, caption_entities: None, has_spoiler: false }
+        Self {
+            media,
+            caption: None,
+            parse_mode: None,
+            caption_entities: None,
+            has_spoiler: false,
+        }
     }
 
     pub fn media(mut self, val: InputFile) -> Self {
@@ -531,7 +537,7 @@ impl From<InputMedia> for InputFile {
 
 impl InputMedia {
     /// Returns an iterator of all files in this input media
-    pub(crate) fn files(&self) -> impl Iterator<Item = &InputFile> {
+    pub(crate) fn _files(&self) -> impl Iterator<Item = &InputFile> {
         use InputMedia::*;
 
         let (media, thumb) = match self {
@@ -546,7 +552,7 @@ impl InputMedia {
     }
 
     /// Returns an iterator of all files in this input media
-    pub(crate) fn files_mut(&mut self) -> impl Iterator<Item = &mut InputFile> {
+    pub(crate) fn _files_mut(&mut self) -> impl Iterator<Item = &mut InputFile> {
         use InputMedia::*;
 
         let (media, thumb) = match self {

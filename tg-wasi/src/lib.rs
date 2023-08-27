@@ -4,7 +4,7 @@ use tg_flows::Update;
 
 lazy_static! {
     static ref TG_API_PREFIX: String = String::from(
-        std::option_env!("TG_API_PREFIX").unwrap_or("https://tg-flows.vercel.app/api")
+        std::option_env!("TG_API_PREFIX").unwrap_or("https://telegram.flows.network/api")
     );
 }
 

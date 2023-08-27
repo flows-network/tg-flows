@@ -1,12 +1,9 @@
 mod method;
 
-use std::{collections::HashMap, fmt::format};
+use std::collections::HashMap;
 
 use anyhow::{anyhow, Context, Result};
-use http_req::{
-    request::{Request, RequestBuilder},
-    uri::Uri,
-};
+use http_req::{request::Request, uri::Uri};
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::Value;
 

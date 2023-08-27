@@ -40,4 +40,5 @@ proxychains.conf
 */target/
 
 */Cargo.lock
-build.rs
+**/build.rs
+**/.cargo

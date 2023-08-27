@@ -153,7 +153,7 @@ impl InputFile {
 
     /// Takes the file name or tries to guess it based on file name in the path
     /// if `File.0`. Returns an empty string if couldn't guess.
-    fn take_or_guess_filename(&mut self) -> Cow<'static, str> {
+    fn _take_or_guess_filename(&mut self) -> Cow<'static, str> {
         self.file_name.take().unwrap_or_else(|| match &self.inner {
             File(path_to_file) => match path_to_file.file_name() {
                 Some(name) => Cow::Owned(name.to_string_lossy().into_owned()),
@@ -190,10 +190,10 @@ impl Serialize for InputFile {
 /// `multipart/form-data`
 #[derive(Clone)]
 struct Read {
-    inner: Arc<TakeCell<dyn AsyncRead + Send + Unpin>>,
-    buf: Arc<OnceCell<Result<Vec<Bytes>, Arc<io::Error>>>>,
-    notify: Arc<watch::Sender<()>>,
-    wait: watch::Receiver<()>,
+    _inner: Arc<TakeCell<dyn AsyncRead + Send + Unpin>>,
+    _buf: Arc<OnceCell<Result<Vec<Bytes>, Arc<io::Error>>>>,
+    _notify: Arc<watch::Sender<()>>,
+    _wait: watch::Receiver<()>,
 }
 
 impl Read {
@@ -201,10 +201,10 @@ impl Read {
         let (tx, rx) = watch::channel(());
 
         Self {
-            inner: it,
-            buf: Arc::default(),
-            notify: Arc::new(tx),
-            wait: rx,
+            _inner: it,
+            _buf: Arc::default(),
+            _notify: Arc::new(tx),
+            _wait: rx,
         }
     }
 }

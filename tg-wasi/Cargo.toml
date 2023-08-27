@@ -9,7 +9,7 @@ path = "src/lib.rs"
 crate-type = ["lib", "cdylib"]
 
 [dependencies]
-tg-flows = { path = "../tg-sdk" }
+tg-flows = { path = "../tg-sdk/lib" }
 http_req_wasi = "0.10.2"
 serde_json = "1.0.0"
 lazy_static = "1"
