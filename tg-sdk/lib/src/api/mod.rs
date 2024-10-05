@@ -9,7 +9,7 @@ use serde_json::Value;
 
 use crate::{
     Chat, ChatId, ChatInviteLink, ChatMember, ChatPermissions, File, InputFile, Me, Message,
-    MessageId, True, UserId, UserProfilePhotos,
+    MessageId, ParseMode, True, UserId, UserProfilePhotos,
 };
 
 pub use self::method::Method;
@@ -127,6 +127,24 @@ impl Telegram {
         let body = serde_json::json!({
             "chat_id": chat_id,
             "text": text,
+        });
+        self.request(Method::SendMessage, body.to_string().as_bytes())
+    }
+
+    pub fn send_message_with_parse_mode<T>(
+        &self,
+        chat_id: ChatId,
+        text: T,
+        parse_mode: ParseMode,
+    ) -> Result<Message>
+    where
+        T: Into<String>,
+    {
+        let text: String = text.into();
+        let body = serde_json::json!({
+            "chat_id": chat_id,
+            "text": text,
+            "parse_mode": parse_mode,
         });
         self.request(Method::SendMessage, body.to_string().as_bytes())
     }
