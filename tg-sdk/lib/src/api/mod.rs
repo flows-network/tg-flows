@@ -590,4 +590,24 @@ impl Telegram {
         });
         self.request(Method::EditMessageText, body.to_string().as_bytes())
     }
+
+    pub fn edit_message_text_with_parse_mode<T>(
+        &self,
+        chat_id: ChatId,
+        message_id: MessageId,
+        text: T,
+        parse_mode: ParseMode,
+    ) -> Result<Message>
+    where
+        T: Into<String>,
+    {
+        let text = text.into();
+        let body = serde_json::json!({
+            "chat_id": chat_id,
+            "message_id": message_id.0,
+            "text": text,
+            "parse_mode": parse_mode,
+        });
+        self.request(Method::EditMessageText, body.to_string().as_bytes())
+    }
 }
