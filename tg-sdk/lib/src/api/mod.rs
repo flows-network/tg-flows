@@ -610,4 +610,20 @@ impl Telegram {
         });
         self.request(Method::EditMessageText, body.to_string().as_bytes())
     }
+
+    pub fn delete_message<T>(&self, chat_id: ChatId, message_id: MessageId) -> Result<True> {
+        let body = serde_json::json!({
+            "chat_id": chat_id,
+            "message_id": message_id.0,
+        });
+        self.request(Method::DeleteMessage, body.to_string().as_bytes())
+    }
+
+    pub fn delete_messages<T>(&self, chat_id: ChatId, message_ids: Vec<MessageId>) -> Result<True> {
+        let body = serde_json::json!({
+            "chat_id": chat_id,
+            "message_ids": message_ids.iter().map(|id| id.0).collect::<Vec<i32>>(),
+        });
+        self.request(Method::DeleteMessages, body.to_string().as_bytes())
+    }
 }

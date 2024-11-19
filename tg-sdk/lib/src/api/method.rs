@@ -87,6 +87,7 @@ pub enum Method {
     EditMessageReplyMarkup,
     StopPoll,
     DeleteMessage,
+    DeleteMessages,
 }
 
 #[cfg(test)]
