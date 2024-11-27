@@ -15,7 +15,7 @@ pub fn update_handler(_: TokenStream, item: TokenStream) -> TokenStream {
 
         }
 
-        fn __updated() -> Option<tg_flows::Update> {
+        fn __updated() -> Option<teloxide::prelude::Update> {
             unsafe {
                 let l = telegram_flows_macros::get_event_body_length();
                 let mut event_body = Vec::<u8>::with_capacity(l as usize);
@@ -23,7 +23,7 @@ pub fn update_handler(_: TokenStream, item: TokenStream) -> TokenStream {
                 assert!(c == l);
                 event_body.set_len(c as usize);
 
-                match serde_json::from_slice::<tg_flows::Update>(&event_body) {
+                match serde_json::from_slice::<teloxide::prelude::Update>(&event_body) {
                     Ok(e) => Some(e),
                     Err(_) => None,
                 }
